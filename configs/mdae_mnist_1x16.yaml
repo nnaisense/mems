@@ -1,0 +1,60 @@
+data:
+    batch_size: 128
+    data_dir: ~/research/data/pytorch
+    dataset: mnist
+    num_workers: 1
+    seed: 1000
+    shape: [ 1, 28, 28 ]
+    shuffle: true
+    val_split: 0
+model:
+    class: MDAE
+    training:
+        grad_clip: 0.0
+        optimizer:
+            class: adam
+            config:
+                betas:
+                    - 0.9
+                    - 0.999
+                eps: 1.0e-08
+                lr: 2.0e-05
+                weight_decay: 0.0
+        seed: 1999
+        sampling:
+            nrow: 10
+            ncol: 10
+            mode: "underdamped"
+            eps_scale: 0.5
+            friction: 0.5
+            lipschitz: 1.0
+            steps: 10
+        sync_log: false
+    M: [ 16 ]
+    dataset: ${data.dataset}
+    phi:
+        class: U2NetFFHQ256
+        config:
+            in_channels: ???
+            out_channels: ???
+            factor: 1
+            bias: true
+    input_shape: ${data.shape}
+    sigma: [ 1.0 ]
+    sigmoid: false
+trainer:
+    acc:
+    auto: true
+    dir: ./logs/
+    epochs: 1000
+    gpus: 1
+    grad_acc: 1
+    limit_train: 1.0
+    limit_val: 1.0
+    load: null
+    log_freq: 50
+    name: mdae_mnist
+    neptune:
+    precision: 32
+    resume:
+    test: false

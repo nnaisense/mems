@@ -1,0 +1,89 @@
+data:
+    batch_size: 32
+    data_dir: ~/research/data/pytorch
+    dataset: mnist
+    num_workers: 1
+    seed: 100
+    shape: [ 1, 28, 28 ]
+    shuffle: true
+    val_split: 0
+model:
+    class: MUVB
+    training:
+        yperx: 1
+        channelbeta: 0.0
+        grad_clip: 0.0
+        grad_skip: 0.0
+        lagrange: 0.0
+        norm_type: 2.0
+        optimizer:
+            class: adabelief
+            config:
+                betas:
+                    - 0.9
+                    - 0.999
+                eps: 1.0e-12
+                lr: 1.0e-04
+                weight_decay: 0.0
+                rectify: false
+        seed: 1764
+        sampling:
+            nrow: 4
+            ncol: 4
+            mode: "underdamped"
+            eps_scale: 1.0
+            friction: 0.5
+            lipschitz: 1.0
+            steps: 10
+        warmup: 20
+        zero_grad: false
+    vae:
+        M: [ 4 ]
+        beta: 1.0
+        dataset: ${data.dataset}
+        decoder:
+            class: Resnet
+            config:
+                act: "silu"
+                bottleneck_multiple: 0.25
+                blocks: "28x2:128,28d2,14x2:256,14d2,7x2:512,7d1.75,4x2:1024,4d2,2x2:1024,2d2,1x1:1024"
+                gain: 1.414
+                init: "orthogonal"
+                reverse_blocks: true
+                out_act: null
+                in_channels: ???
+                out_channels: 1
+        encoder:
+            class: Resnet
+            config:
+                act: "silu"
+                bottleneck_multiple: 0.25
+                blocks: "28x2:128,28d2,14x2:256,14d2,7x2:512,7d2,4x2:1024,4d2,2x2:1024,2d2,1x1:1024"
+                gain: 1.414
+                init: "orthogonal"
+                reverse_blocks: false
+                out_act: null
+                in_channels: ???
+                out_channels: ???
+        input_shape: ${data.shape}
+        noise_model: GAUSS
+        sigma: [ 1.0 ]
+        zdim: 2048
+        meta: false
+        two_encoders: false
+trainer:
+    acc: null
+    auto: true
+    dir: ./logs/
+    epochs: 1000
+    gpus: 1
+    grad_acc: 1
+    limit_train: 1.0
+    limit_val: 1.0
+    load: null
+    log_freq: 50
+    name: muvb
+    neptune: darwinn/MEMS
+    precision: 32
+    resume: null
+    test: false
