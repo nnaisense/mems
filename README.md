@@ -41,8 +41,8 @@ python run/train.py with configs/mdae_mnist_1x16.yaml model.sigma=[0.5] model.M=
 ```
 
 ## Authors / Citation
-- [**Saeed Saremi**](saeed@nnaisense.com)
-- [**Rupesh Srivastava**](rupesh@nnaisense.com)
+- [**Saeed Saremi**](https://github.com/saeedsaremi)
+- [**Rupesh Srivastava**](https://rupeshks.cc/)
 
 ```
 Saremi, S., & Srivastava, R. K. (2022). Multimeasurement Generative Models. International Conference on Learning Representations. https://openreview.net/forum?id=QRX0nCX_gk 
